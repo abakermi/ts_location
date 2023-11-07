@@ -10,7 +10,7 @@ class BackgroundLocation {
   // The channel to be used for communication.
   // This channel is also refrenced inside both iOS and Abdroid classes
   static const MethodChannel _channel =
-      MethodChannel('com.example.ts_location/methods');
+      MethodChannel('qa.shaheen.tslocation/methods');
 
   // StreamController for broadcasting location updates
   static StreamController<Location> _locationUpdatesController =
@@ -57,24 +57,48 @@ class BackgroundLocation {
       'distance_filter': distanceFilter,
       'force_location_manager': forceAndroidLocationManager
     });
-    print("BackgroundLocation._internal set channhl handle");
+    // print("BackgroundLocation._internal set channhl handle");
+    // _channel.setMethodCallHandler((MethodCall methodCall) async {
+    //   print("method called...........${methodCall.method}");
+    //   if (methodCall.method == 'chaheenLocation') {
+    //  try {
+  
+    //       var locationData = Map.from(methodCall.arguments);
+    //     _locationUpdatesController.add(Location.fromMap(locationData));
+    //  } catch (e) {
+    //   print(e.toString());
+       
+    //  }
+    //   }
+    // });
+    // Initialize a new StreamController if one was closed previously
+    // if (!_locationUpdatesController.hasListener) {
+    //   _locationUpdatesController = StreamController<Location>.broadcast();
+    // }
+  }
+
+    /// Register a function to recive location updates as long as the location
+  /// service has started
+  static getLocationUpdates(Function(Location) location) {
+    // add a handler on the channel to recive updates from the native classes
     _channel.setMethodCallHandler((MethodCall methodCall) async {
-      print("method called...........${methodCall.method}");
       if (methodCall.method == 'chaheenLocation') {
+               print("Exuting===========> chaheenLocation");
         var locationData = Map.from(methodCall.arguments);
-        _locationUpdatesController.add(Location.fromMap(locationData));
-      } else {
-        throw PlatformException(
-          code: 'Unimplemented',
-          details:
-              'ts_location for method ${methodCall.method} not implemented.',
+        // Call the user passed function
+        location(
+          Location(
+              latitude: locationData['latitude'],
+              longitude: locationData['longitude'],
+              altitude: locationData['altitude'],
+              accuracy: locationData['accuracy'],
+              bearing: locationData['bearing'],
+              speed: locationData['speed'],
+              time: locationData['time'],
+              isMock: locationData['is_mock']),
         );
       }
     });
-    // Initialize a new StreamController if one was closed previously
-    if (!_locationUpdatesController.hasListener) {
-      _locationUpdatesController = StreamController<Location>.broadcast();
-    }
   }
 
   static setAndroidNotification(
@@ -118,41 +142,47 @@ class BackgroundLocation {
 
   /// Register a function to recive location updates as long as the location
   /// service has started
-  static getLocationUpdates(Function(Location) location) {
-    // add a handler on the channel to recive updates from the native classes
-    _channel.setMethodCallHandler((MethodCall methodCall) async {
-      print("methodCall: ${methodCall.method}");
-      if (methodCall.method == 'chaheenLocation') {
-        var locationData = Map.from(methodCall.arguments);
-        // Call the user passed function
-        // location(
-        //   Location(
-        //       latitude: locationData['latitude'],
-        //       longitude: locationData['longitude'],
-        //       altitude: locationData['altitude'],
-        //       accuracy: locationData['accuracy'],
-        //       bearing: locationData['bearing'],
-        //       speed: locationData['speed'],
-        //       time: locationData['time'],
-        //       isMock: locationData['is_mock']),
-        // );
+  // static getLocationUpdates(Function(Location) location) {
+  //   // add a handler on the channel to recive updates from the native classes
+  //   _channel.setMethodCallHandler((MethodCall methodCall) async {
+  //     print("methodCall: ${methodCall.method}");
+  //     if (methodCall.method == 'chaheenLocation') {
+  //       var locationData = Map.from(methodCall.arguments);
+  //       // Call the user passed function
+  //       // location(
+  //       //   Location(
+  //       //       latitude: locationData['latitude'],
+  //       //       longitude: locationData['longitude'],
+  //       //       altitude: locationData['altitude'],
+  //       //       accuracy: locationData['accuracy'],
+  //       //       bearing: locationData['bearing'],
+  //       //       speed: locationData['speed'],
+  //       //       time: locationData['time'],
+  //       //       isMock: locationData['is_mock']),
+  //       // );
 
-        // Add the location data to the stream
-        _locationUpdatesController.add(
-          Location(
-            latitude: locationData['latitude'],
-            longitude: locationData['longitude'],
-            altitude: locationData['altitude'],
-            accuracy: locationData['accuracy'],
-            bearing: locationData['bearing'],
-            speed: locationData['speed'],
-            time: locationData['time'],
-            isMock: locationData['is_mock'],
-          ),
-        );
-      }
-    });
-  }
+  //       // Add the location data to the stream
+  //   try {
+  //         _locationUpdatesController.add(
+  //         Location(
+  //           latitude: locationData['latitude'],
+  //           longitude: locationData['longitude'],
+  //           altitude: locationData['altitude'],
+  //           accuracy: locationData['accuracy'],
+  //           bearing: locationData['bearing'],
+  //           speed: locationData['speed'],
+  //           time: locationData['time'],
+  //           isMock: locationData['is_mock'],
+  //         ),
+  //       );
+  //       print("subscription sent.....");
+  //   } catch (e) {
+  //     print(e.toString());
+      
+  //   }
+  //     }
+  //   });
+  // }
 }
 
 /// about the user current location

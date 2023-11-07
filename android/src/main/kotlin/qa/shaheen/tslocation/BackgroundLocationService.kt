@@ -1,4 +1,4 @@
-package com.example.ts_location
+package qa.shaheen.tslocation
 
 import android.Manifest
 import android.app.Activity
@@ -20,7 +20,7 @@ import io.flutter.plugin.common.PluginRegistry
 class BackgroundLocationService :
         MethodChannel.MethodCallHandler, PluginRegistry.RequestPermissionsResultListener {
     companion object {
-        const val METHOD_CHANNEL_NAME = "${BackgroundLocationPlugin.PLUGIN_ID}/methods"
+        const val METHOD_CHANNEL_NAME = "${TsLocationPlugin.PLUGIN_ID}/methods"
         private const val REQUEST_PERMISSIONS_REQUEST_CODE = 34
 
         private var instance: BackgroundLocationService? = null
@@ -205,12 +205,12 @@ class BackgroundLocationService :
                 )
         if (shouldProvideRationale) {
             Log.i(
-                    BackgroundLocationPlugin.TAG,
+                    TsLocationPlugin.TAG,
                     "Displaying permission rationale to provide additional context."
             )
             Toast.makeText(context, R.string.permission_rationale, Toast.LENGTH_LONG).show()
         } else {
-            Log.i(BackgroundLocationPlugin.TAG, "Requesting permission")
+            Log.i(TsLocationPlugin.TAG, "Requesting permission")
             ActivityCompat.requestPermissions(
                     activity!!,
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
@@ -238,6 +238,7 @@ class BackgroundLocationService :
                 println("channel name....... $METHOD_CHANNEL_NAME")
                 // channel.invokeMethod("location", locationMap, null)
                 channel.invokeMethod("chaheenLocation", locationMap, object : MethodChannel.Result {
+                  
                     override fun success(result: Any?) {
                         // Handle success result
                         Log.d("MethodChannel", "Successfully sent location data.")
@@ -267,11 +268,11 @@ class BackgroundLocationService :
             permissions: Array<out String>,
             grantResults: IntArray
     ): Boolean {
-        Log.i(BackgroundLocationPlugin.TAG, "onRequestPermissionResult")
+        Log.i(TsLocationPlugin.TAG, "onRequestPermissionResult")
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             when {
                 grantResults!!.isEmpty() ->
-                        Log.i(BackgroundLocationPlugin.TAG, "User interaction was cancelled.")
+                        Log.i(TsLocationPlugin.TAG, "User interaction was cancelled.")
                 grantResults[0] == PackageManager.PERMISSION_GRANTED ->
                         service?.requestLocationUpdates()
                 else ->

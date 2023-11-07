@@ -11,14 +11,14 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.example.ts_location
+package qa.shaheen.tslocation
 
 import android.content.Context
 
 internal object Utils {
 
     private const val KEY_REQUESTING_LOCATION_UPDATES = "requesting_location_updates"
-    private const val SHARED_PREFERENCES_FILE = "${BackgroundLocationPlugin.PLUGIN_ID}_preferences"
+    private const val SHARED_PREFERENCES_FILE = "${TsLocationPlugin.PLUGIN_ID}_preferences"
 
     fun requestingLocationUpdates(context: Context): Boolean {
         return context.getSharedPreferences(SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE)

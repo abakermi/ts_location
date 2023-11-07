@@ -1,4 +1,4 @@
-package com.example.ts_location
+package qa.shaheen.tslocation
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
@@ -6,7 +6,7 @@ import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.PluginRegistry
 
-class BackgroundLocationPlugin : FlutterPlugin, ActivityAware {
+class TsLocationPlugin : FlutterPlugin, ActivityAware {
 
     companion object {
 
@@ -18,8 +18,8 @@ class BackgroundLocationPlugin : FlutterPlugin, ActivityAware {
             registrar.addRequestPermissionsResultListener(service)
         }
 
-        const val TAG = "com.example.Log.Tag"
-        const val PLUGIN_ID = "com.example.ts_location"
+        const val TAG = "qa.shaheen.Log.Tag"
+        const val PLUGIN_ID = "qa.shaheen.tslocation"
     }
 
     override fun onAttachedToEngine(binding: FlutterPluginBinding) {

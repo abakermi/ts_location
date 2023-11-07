@@ -1,4 +1,4 @@
-package com.example.ts_location
+package qa.shaheen.tslocation
 
 import android.annotation.SuppressLint
 import android.app.*

@@ -35,8 +35,8 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.example.ts_location
-        pluginClass: BackgroundLocationPlugin
+        package: qa.shaheen.tslocation
+        pluginClass: TsLocationPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

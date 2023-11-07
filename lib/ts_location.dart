@@ -21,8 +21,7 @@ class BackgroundLocation {
       _locationUpdatesController.stream;
 
   BackgroundLocation._internal() {
-    print("BackgroundLocation._internal set channhl handle");
-    _channel.setMethodCallHandler(_locationUpdatedHandler);
+    // _channel.setMethodCallHandler(_locationUpdatedHandler);
   }
 
   // Factory constructor to access the stream and set up the listener
@@ -32,7 +31,7 @@ class BackgroundLocation {
 
   static Future<void> _locationUpdatedHandler(MethodCall methodCall) async {
     print("method called...........${methodCall.method}");
-    if (methodCall.method == 'location') {
+    if (methodCall.method == 'chaheenLocation') {
       var locationData = Map.from(methodCall.arguments);
       _locationUpdatesController.add(Location.fromMap(locationData));
     } else {
@@ -58,7 +57,20 @@ class BackgroundLocation {
       'distance_filter': distanceFilter,
       'force_location_manager': forceAndroidLocationManager
     });
-    _channel.setMethodCallHandler(_locationUpdatedHandler);
+    print("BackgroundLocation._internal set channhl handle");
+    _channel.setMethodCallHandler((MethodCall methodCall) async {
+      print("method called...........${methodCall.method}");
+      if (methodCall.method == 'chaheenLocation') {
+        var locationData = Map.from(methodCall.arguments);
+        _locationUpdatesController.add(Location.fromMap(locationData));
+      } else {
+        throw PlatformException(
+          code: 'Unimplemented',
+          details:
+              'ts_location for method ${methodCall.method} not implemented.',
+        );
+      }
+    });
     // Initialize a new StreamController if one was closed previously
     if (!_locationUpdatesController.hasListener) {
       _locationUpdatesController = StreamController<Location>.broadcast();
